@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090909">
+    
+    <title>JStudio | Desenvolvimento de Software, Websites e Soluções Digitais</title>
+    <meta name="description" content="A JStudio é uma agência digital premium especializada em desenvolvimento de sistemas, websites corporativos, landing pages e automação com IA. Transforme sua empresa com soluções digitais de alto nível.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="JStudio | Desenvolvimento de Software, Websites e Soluções Digitais">
+    <meta property="og:description" content="A JStudio é uma agência digital premium especializada em desenvolvimento de sistemas, websites corporativos e automação.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jstudio.com.br/">
+    <meta property="og:image" content="https://jstudio.com.br/og-image.jpg">
+    <meta property="og:site_name" content="JStudio">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JStudio | Desenvolvimento de Software, Websites e Soluções Digitais">
+    <meta name="twitter:description" content="A JStudio é uma agência digital premium especializada em desenvolvimento de sistemas, websites corporativos e automação.">
+    <meta name="twitter:image" content="https://jstudio.com.br/twitter-image.jpg">
+    
+    <link rel="canonical" href="https://jstudio.com.br/">
+    
+    <!-- Favicon inline SVG -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23090909'/><text x='50' y='70' font-family='sans-serif' font-size='65' font-weight='bold' fill='%23f97316' text-anchor='middle'>J</text></svg>">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "JStudio",
+      "image": "https://jstudio.com.br/logo.png",
+      "@id": "https://jstudio.com.br/",
+      "url": "https://jstudio.com.br/",
+      "telephone": "+244922769326",
+      "email": "jstudio.co.ao@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Cabinda",
+        "addressCountry": "AO"
+      },
+      "description": "Desenvolvimento de Software, Websites e Soluções Digitais"
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&family=Oxanium:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
+
+    <!-- Custom JS -->
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <!-- 1. Custom Cursor + Light -->
+    <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
+    <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- 2. Animated Background Experience -->
+    <div class="bg-animated-wrapper" aria-hidden="true">
+        <div class="bg-glow-orb bg-glow-orb-1"></div>
+        <div class="bg-glow-orb bg-glow-orb-2"></div>
+        <div class="bg-glow-orb bg-glow-orb-3"></div>
+        <div class="bg-cyber-grid"></div>
+        <canvas id="particlesCanvas"></canvas>
+    </div>
+
+    <!-- 3. Navbar -->
+    <nav class="navbar" id="navbar" aria-label="Navegação principal">
+        <div class="navbar-container">
+            <a href="#hero" class="navbar-logo" aria-label="Ir para o início">
+                <img src="logo-jstudio.png" alt="JStudio - Soluções Criativas & Digitais" class="navbar-logo-img">
+            </a>
+            
+            <ul class="navbar-menu">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#services" class="nav-link">Serviços</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
+                <li><a href="#process" class="nav-link">Processo</a></li>
+                <li><a href="#about" class="nav-link">Sobre</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+                <li><a href="#contact" class="nav-link">Contato</a></li>
+            </ul>
+
+            <div class="navbar-cta">
+                <button class="btn-primary magnetic" id="btnQuote">Solicitar Orçamento</button>
+            </div>
+
+            <button class="navbar-toggle" id="navToggle" aria-label="Abrir menu mobile" aria-expanded="false">
+                <span class="toggle-bar"></span>
+                <span class="toggle-bar"></span>
+                <span class="toggle-bar"></span>
+            </button>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+            <ul class="mobile-nav">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#services" class="nav-link">Serviços</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
+                <li><a href="#process" class="nav-link">Processo</a></li>
+                <li><a href="#about" class="nav-link">Sobre</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+                <li><a href="#contact" class="nav-link">Contato</a></li>
+            </ul>
+            <div class="mobile-cta">
+                <button class="btn-primary" id="btnQuoteMobile">Solicitar Orçamento</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- 4. Hero Section -->
+        <section class="hero" id="hero" aria-label="Introdução">
+            <div class="hero-bg" aria-hidden="true"></div>
+            <div class="hero-container container">
+                <div class="hero-content">
+                    <span class="hero-badge">🚀 Agência Digital Premium</span>
+                    <h1 class="hero-title">Construímos <span class='text-gradient'>Sistemas</span>, <span class='text-gradient'>Websites</span> e <span class='text-gradient'>Soluções Digitais</span> que impulsionam empresas.</h1>
+                    <p class="hero-description">Criamos experiências digitais modernas para empresas que desejam crescer, automatizar processos e aumentar resultados.</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn-primary magnetic btn-glow">
+                            Solicitar Orçamento
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                        <a href="#portfolio" class="btn-secondary magnetic">
+                            Ver Portfólio
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        </a>
+                    </div>
+                    <div class="hero-clients">
+                        <p>Empresas que confiam em nós</p>
+                        <div class="client-logos">
+                            <span class="client-logo">TechVista</span>
+                            <span class="client-logo">InnovaCorp</span>
+                            <span class="client-logo">DataFlow</span>
+                            <span class="client-logo">EcoStart</span>
+                            <span class="client-logo">BrandPulse</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="hero-video-container">
+                        <video class="hero-video" autoplay muted loop playsinline preload="auto">
+                            <source src="Cyborg_man_adjusts_posture_202608242009 (1).mp4" type="video/mp4">
+                        </video>
+                        <div class="hero-video-glow" aria-hidden="true"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Stats Section -->
+        <section class="stats" id="stats" aria-label="Nossos números">
+            <div class="stats-container container">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="250" data-suffix=" Projetos">0</div>
+                    <div class="stat-label">Projetos Entregues</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="120" data-suffix=" Clientes">0</div>
+                    <div class="stat-label">Clientes Ativos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="98" data-suffix="%">0</div>
+                    <div class="stat-label">Satisfação</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="24" data-suffix="h">0</div>
+                    <div class="stat-label">Tempo Médio de Resposta</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="5" data-suffix="★">0</div>
+                    <div class="stat-label">Avaliação Média</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5.5. Container Scroll 3D Showcase (Aceternity UI) -->
+        <section class="container-scroll-section" id="showcase" aria-label="Demonstração da Plataforma">
+            <div class="container-scroll-container">
+                <div class="container-scroll-header">
+                    <span class="section-tag">TECNOLOGIA & DESIGN DE PONTA</span>
+                    <h2 class="container-scroll-title">
+                        O poder de interfaces <br>
+                        <span class="text-gradient">modernas, rápidas e inteligentes</span>
+                    </h2>
+                    <p class="container-scroll-subtitle">
+                        Desenvolvemos plataformas escaláveis com arquitetura de ponta, alta performance e foco total em conversão.
+                    </p>
+                </div>
+
+                <div class="container-scroll-perspective">
+                    <div class="container-scroll-card">
+                        <div class="card-screen">
+                            <div class="mock-browser-bar">
+                                <div class="mock-browser-dots">
+                                    <span class="dot red"></span>
+                                    <span class="dot yellow"></span>
+                                    <span class="dot green"></span>
+                                </div>
+                                <div class="mock-browser-url">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                    <span>app.jstudio.co.ao/command-center</span>
+                                </div>
+                                <div class="mock-browser-status">
+                                    <span class="live-badge">● SISTEMA ATIVO</span>
+                                </div>
+                            </div>
+                            <div class="mock-dashboard-content">
+                                <div class="mock-sidebar">
+                                    <div class="mock-logo-mini">J</div>
+                                    <div class="mock-nav-item active"></div>
+                                    <div class="mock-nav-item"></div>
+                                    <div class="mock-nav-item"></div>
+                                    <div class="mock-nav-item"></div>
+                                    <div class="mock-nav-item"></div>
+                                </div>
+                                <div class="mock-body">
+                                    <div class="mock-header-row">
+                                        <div class="mock-title-group">
+                                            <div class="mock-title-bar"></div>
+                                            <div class="mock-sub-bar"></div>
+                                        </div>
+                                        <div class="mock-badge-cluster">
+                                            <span class="tech-chip">⚡ 99.9% Uptime</span>
+                                            <span class="tech-chip active">🤖 AI Engine Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="mock-stats-grid">
+                                        <div class="mock-stat-card">
+                                            <span class="stat-mini-label">Performance Lighthouse</span>
+                                            <span class="stat-mini-val">99.8 / 100</span>
+                                            <div class="stat-progress-bar"><div class="fill" style="width: 98%;"></div></div>
+                                        </div>
+                                        <div class="mock-stat-card">
+                                            <span class="stat-mini-label">Taxa de Conversão</span>
+                                            <span class="stat-mini-val">+342%</span>
+                                            <div class="stat-progress-bar"><div class="fill" style="width: 85%;"></div></div>
+                                        </div>
+                                        <div class="mock-stat-card">
+                                            <span class="stat-mini-label">Velocidade de Carregamento</span>
+                                            <span class="stat-mini-val">0.32s</span>
+                                            <div class="stat-progress-bar"><div class="fill" style="width: 95%;"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="mock-chart-container">
+                                        <div class="chart-header-row">
+                                            <span>Métricas de Tráfego & Conversão em Tempo Real</span>
+                                            <span class="chart-tag">Automação de Vendas 24/7</span>
+                                        </div>
+                                        <div class="chart-visual">
+                                            <div class="chart-column" style="--h: 42%;"><span>Seg</span></div>
+                                            <div class="chart-column" style="--h: 65%;"><span>Ter</span></div>
+                                            <div class="chart-column" style="--h: 52%;"><span>Qua</span></div>
+                                            <div class="chart-column" style="--h: 84%;"><span>Qui</span></div>
+                                            <div class="chart-column" style="--h: 70%;"><span>Sex</span></div>
+                                            <div class="chart-column active" style="--h: 96%;"><span>Sáb</span></div>
+                                            <div class="chart-column" style="--h: 88%;"><span>Dom</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Services Section -->
+        <section class="services" id="services" aria-labelledby="services-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-tag">DEPARTAMENTOS & SERVIÇOS</span>
+                    <h2 class="section-title" id="services-title">Soluções digitais <span class='text-gradient'>completas</span> por departamento</h2>
+                    <p class="section-description">Estrutura especializada em 3 departamentos estratégicos para atender as necessidades da sua empresa com excelência técnica e criativa.</p>
+                </header>
+
+                <!-- Department Filter Tabs -->
+                <div class="dept-filters" role="tablist" aria-label="Filtrar por departamento">
+                    <button class="dept-btn active" data-dept="all" role="tab" aria-selected="true">✨ Todos os Departamentos</button>
+                    <button class="dept-btn" data-dept="design" role="tab" aria-selected="false">🎨 Design Gráfico</button>
+                    <button class="dept-btn" data-dept="tech" role="tab" aria-selected="false">💻 Tecnologia</button>
+                    <button class="dept-btn" data-dept="audiovisual" role="tab" aria-selected="false">🎬 Audiovisual</button>
+                </div>
+
+                <!-- Fan Carousel Container for Services -->
+                <div class="services-fan-wrapper" id="servicesFanWrapper">
+                    <div class="fan-stage" id="servicesFanStage">
+                        <div class="services-grid services-fan-grid" id="servicesGrid">
+                    <!-- ================= DEPARTAMENTO DE DESIGN GRÁFICO ================= -->
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                        </div>
+                        <h3 class="service-title">Logotipos</h3>
+                        <p class="service-description">Design exclusivo, versátil e memorável de marcas para posicionar sua empresa com autoridade no mercado.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        </div>
+                        <h3 class="service-title">Identidade Visual</h3>
+                        <p class="service-description">Manual de marca completo, paletas cromáticas, padrões tipográficos e guia de estilo corporativo.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        </div>
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <h3 class="service-title">Flyers</h3>
+                        <p class="service-description">Materiais publicitários de alto impacto para divulgação de promoções, eventos e apresentações de produtos.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                        </div>
+                        <h3 class="service-title">Cartões de Visita</h3>
+                        <p class="service-description">Design elegante com acabamento premium para causar a primeira impressão perfeita em reuniões de negócios.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        </div>
+                        <h3 class="service-title">Catálogos</h3>
+                        <p class="service-description">Diagramação moderna e atraente de produtos e serviços para otimizar suas apresentações comerciais.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        </div>
+                        <h3 class="service-title">Sacolas Personalizadas</h3>
+                        <p class="service-description">Design de embalagens e sacolas estilizadas que transformam a entrega em um momento de branding inesquecível.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        </div>
+                        <h3 class="service-title">Banners</h3>
+                        <p class="service-description">Artes digitais e impressas em altíssima definição para fachadas, banners de sites, redes sociais e eventos.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9"></path><polyline points="22 7 12 13 2 7"></polyline><path d="M17 19l2 2 4-4"></path></svg>
+                        </div>
+                        <h3 class="service-title">Convites Digitais</h3>
+                        <p class="service-description">Convites interativos, animados e modernos com botões de localização, RSVP e confirmação no WhatsApp.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="design">
+                        <div class="service-dept-badge">Design Gráfico</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <h3 class="service-title">Timbragem</h3>
+                        <p class="service-description">Papéis timbrados, envelopes e pastas corporativas personalizadas para garantir uniformidade institucional.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+
+                    <!-- ================= DEPARTAMENTO DE TECNOLOGIA ================= -->
+                    <article class="service-card fan-card" data-department="tech">
+                        <div class="service-dept-badge">Tecnologia</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                        </div>
+                        <h3 class="service-title">Websites Empresariais</h3>
+                        <p class="service-description">Desenvolvimento de portais corporativos modernos, ultrarrápidos, responsivos e otimizados para mecanismos de busca.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="tech">
+                        <div class="service-dept-badge">Tecnologia</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2l.5-.5a2 2 0 0 0-2-2l-.5-.5z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path></svg>
+                        </div>
+                        <h3 class="service-title">Landing Pages</h3>
+                        <p class="service-description">Páginas de altíssima conversão projetadas com gatilhos mentais e carregamento instantâneo para escalar vendas.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="tech">
+                        <div class="service-dept-badge">Tecnologia</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        </div>
+                        <h3 class="service-title">Lojas Virtuais</h3>
+                        <p class="service-description">Plataformas de e-commerce seguras e escaláveis com integração de pagamentos, frete e gestão de estoque.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="tech">
+                        <div class="service-dept-badge">Tecnologia</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                        </div>
+                        <h3 class="service-title">Aplicativos</h3>
+                        <p class="service-description">Desenvolvimento de apps nativos e multiplataforma (iOS e Android) com experiência fluida e performance máxima.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="tech">
+                        <div class="service-dept-badge">Tecnologia</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        </div>
+                        <h3 class="service-title">Softwares Empresariais</h3>
+                        <p class="service-description">Sistemas de software sob medida para atender requisitos específicos e automatizar fluxos de trabalho estratégicos.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="tech">
+                        <div class="service-dept-badge">Tecnologia</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        </div>
+                        <h3 class="service-title">Sistemas de Gestão</h3>
+                        <p class="service-description">Plataformas ERP e CRM personalizadas para gestão financeira, operacional e controle total de clientes.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="tech">
+                        <div class="service-dept-badge">Tecnologia</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        </div>
+                        <h3 class="service-title">Automação WhatsApp</h3>
+                        <p class="service-description">Chatbots inteligentes com IA, atendimento 24/7, disparos automáticos e integração ao seu funil de vendas.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <!-- ================= DEPARTAMENTO AUDIOVISUAL ================= -->
+                    <article class="service-card fan-card" data-department="audiovisual">
+                        <div class="service-dept-badge">Audiovisual</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                        </div>
+                        <h3 class="service-title">Filmagem de Eventos</h3>
+                        <p class="service-description">Cobertura em vídeo 4K de conferências, congressos, feiras de negócios e eventos corporativos.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="audiovisual">
+                        <div class="service-dept-badge">Audiovisual</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <h3 class="service-title">Casamentos</h3>
+                        <p class="service-description">Produção audiovisual emocionante e cinematográfica para registrar os momentos mais importantes da cerimônia.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="audiovisual">
+                        <div class="service-dept-badge">Audiovisual</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                        </div>
+                        <h3 class="service-title">Defesas Académicas</h3>
+                        <p class="service-description">Gravação profissional de alta fidelidade sonora e visual para teses, dissertações e bancas examinadoras.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="audiovisual">
+                        <div class="service-dept-badge">Audiovisual</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+                        </div>
+                        <h3 class="service-title">Vídeos Promocionais</h3>
+                        <p class="service-description">Comerciais impactantes, teasers e vídeos curtos para Reels/TikTok projetados para maximizar vendas.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="audiovisual">
+                        <div class="service-dept-badge">Audiovisual</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        </div>
+                        <h3 class="service-title">Fotografia</h3>
+                        <p class="service-description">Ensaios fotográficos profissionais corporativos, retratos executivos, produtos (still) e cobertura de eventos.</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+
+                    <article class="service-card fan-card" data-department="audiovisual">
+                        <div class="service-dept-badge">Audiovisual</div>
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                        </div>
+                        <h3 class="service-title">Edição Profissional</h3>
+                        <p class="service-description">Pós-produção avançada, tratamento de áudio, edição rítmica, color grading e efeitos especiais (VFX/Motion).</p>
+                        <a href="#contact" class="service-link">Solicitar Orçamento →</a>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Fan Carousel Navigation Controls -->
+            <div class="fan-controls" id="fanControls">
+                <button class="fan-arrow-btn fan-prev-btn" id="fanPrevBtn" aria-label="Serviço anterior">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <div class="fan-dots" id="fanDots" role="tablist" aria-label="Indicadores de serviços"></div>
+                <button class="fan-arrow-btn fan-next-btn" id="fanNextBtn" aria-label="Próximo serviço">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- 7. Process Section -->
+        <section class="process" id="process" aria-labelledby="process-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-tag">NOSSO PROCESSO</span>
+                    <h2 class="section-title" id="process-title">Do conceito à <span class='text-gradient'>realidade</span></h2>
+                    <p class="section-description">Nossa metodologia de desenvolvimento ágil e estruturada garante entregas no prazo e máxima qualidade.</p>
+                </header>
+
+                <div class="timeline">
+                    <div class="timeline-line" aria-hidden="true"></div>
+                    
+                    <div class="timeline-item timeline-item--left">
+                        <div class="timeline-dot"><span class="timeline-number">01</span></div>
+                        <div class="timeline-content">
+                            <h3>Planejamento</h3>
+                            <p>Entendemos as necessidades do seu negócio, definimos requisitos claros e estabelecemos metas estratégicas.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item timeline-item--right">
+                        <div class="timeline-dot"><span class="timeline-number">02</span></div>
+                        <div class="timeline-content">
+                            <h3>Pesquisa</h3>
+                            <p>Realizamos análise de mercado, concorrência e público-alvo para garantir que a solução seja assertiva e inovadora.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item timeline-item--left">
+                        <div class="timeline-dot"><span class="timeline-number">03</span></div>
+                        <div class="timeline-content">
+                            <h3>Design</h3>
+                            <p>Criamos wireframes e protótipos de alta fidelidade focados em UI/UX para validação visual e interativa.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item timeline-item--right">
+                        <div class="timeline-dot"><span class="timeline-number">04</span></div>
+                        <div class="timeline-content">
+                            <h3>Desenvolvimento</h3>
+                            <p>Escrevemos código limpo, seguro e escalável utilizando as tecnologias mais modernas do mercado.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item timeline-item--left">
+                        <div class="timeline-dot"><span class="timeline-number">05</span></div>
+                        <div class="timeline-content">
+                            <h3>Testes</h3>
+                            <p>Realizamos rigorosos testes de qualidade (QA), performance e segurança antes de qualquer lançamento.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item timeline-item--right">
+                        <div class="timeline-dot"><span class="timeline-number">06</span></div>
+                        <div class="timeline-content">
+                            <h3>Implantação</h3>
+                            <p>Configuramos a infraestrutura necessária em nuvem e realizamos o deploy seguro da aplicação.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item timeline-item--left">
+                        <div class="timeline-dot"><span class="timeline-number">07</span></div>
+                        <div class="timeline-content">
+                            <h3>Suporte</h3>
+                            <p>Oferecemos manutenção contínua, monitoramento e atualizações para garantir que tudo funcione perfeitamente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Portfolio Section -->
+        <section class="portfolio" id="portfolio" aria-labelledby="portfolio-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-tag">PORTFÓLIO</span>
+                    <h2 class="section-title" id="portfolio-title">Projetos que <span class='text-gradient'>transformam</span></h2>
+                </header>
+
+                <div class="portfolio-filters" role="group" aria-label="Filtrar projetos">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="sistemas">Sistemas</button>
+                    <button class="filter-btn" data-filter="websites">Websites</button>
+                    <button class="filter-btn" data-filter="apps">Apps</button>
+                    <button class="filter-btn" data-filter="landing">Landing Pages</button>
+                </div>
+
+                <div class="portfolio-grid">
+                    <article class="portfolio-item" data-category="sistemas">
+                        <div class="portfolio-image">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80" alt="Sistema ERP Corporativo em computador" class="portfolio-img" loading="lazy">
+                            <span class="portfolio-badge-always">Sistema Web</span>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <span class="portfolio-category">Sistema Web</span>
+                                <h3>ERP Corporativo</h3>
+                                <p>Sistema de gestão integrada com módulos de financeiro, estoque e RH em tela corporativa.</p>
+                                <div class="portfolio-techs">
+                                    <span>React</span>
+                                    <span>Node.js</span>
+                                    <span>PostgreSQL</span>
+                                </div>
+                                <a href="#contact" class="portfolio-link">Solicitar Projeto →</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-item" data-category="websites">
+                        <div class="portfolio-image">
+                            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=900&q=80" alt="Portal Imobiliário em computador laptop" class="portfolio-img" loading="lazy">
+                            <span class="portfolio-badge-always">Website</span>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <span class="portfolio-category">Website</span>
+                                <h3>Portal Imobiliário</h3>
+                                <p>Website institucional moderno com busca avançada de imóveis e mapas interativos em laptop.</p>
+                                <div class="portfolio-techs">
+                                    <span>Next.js</span>
+                                    <span>Tailwind</span>
+                                    <span>Supabase</span>
+                                </div>
+                                <a href="#contact" class="portfolio-link">Solicitar Projeto →</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-item" data-category="apps">
+                        <div class="portfolio-image">
+                            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=900&q=80" alt="Aplicativo Mobile FinTech em smartphone" class="portfolio-img" loading="lazy">
+                            <span class="portfolio-badge-always">App Mobile</span>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <span class="portfolio-category">Aplicativo Mobile</span>
+                                <h3>App FinTech</h3>
+                                <p>Aplicativo financeiro mobile para gestão de gastos pessoais e carteiras de investimento.</p>
+                                <div class="portfolio-techs">
+                                    <span>Flutter</span>
+                                    <span>Firebase</span>
+                                    <span>Node.js</span>
+                                </div>
+                                <a href="#contact" class="portfolio-link">Solicitar Projeto →</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-item" data-category="landing" data-multi-projects='[{"title":"Informática Profissional","category":"Landing Page de Alta Conversão","desc":"Aprenda Informática Profissional e destaque-se no mercado de trabalho. Desenvolvimento de competências práticas com design de alta conversão.","techs":["React","Vercel","Tailwind"],"url":"https://informatica-profissional.vercel.app/","img":"informatica-profissional.png"},{"title":"JamesFin","category":"Fintech & Diagnóstico Financeiro com IA","desc":"Descubra como está a sua vida financeira através de um diagnóstico interativo e personalizado inteligente feito por IA.","techs":["React","Next.js","Vercel"],"url":"https://jamesfinn.vercel.app/","img":"jamesfin.png"}]'>
+                        <div class="portfolio-image">
+                            <img src="informatica-profissional.png" alt="Projetos de Landing Page desenvolvidos pela JStudio" class="portfolio-img" loading="lazy">
+                            <span class="portfolio-badge-always">2 Projetos Online</span>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <span class="portfolio-category">Landing Pages</span>
+                                <h3>Projetos de Landing Page</h3>
+                                <p>Páginas de alta conversão e soluções interativas desenvolvidas para maximizar resultados e autoridade digital.</p>
+                                <div class="portfolio-techs">
+                                    <span>Informática Profissional</span>
+                                    <span>JamesFin</span>
+                                </div>
+                                <button class="portfolio-link btn-open-multi-projects" type="button" aria-label="Ver Projetos de Landing Page">Ver Projetos (2) ↗</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-item" data-category="sistemas">
+                        <div class="portfolio-image">
+                            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80" alt="Dashboard Analytics em monitor" class="portfolio-img" loading="lazy">
+                            <span class="portfolio-badge-always">Dashboard</span>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <span class="portfolio-category">Dashboard</span>
+                                <h3>Dashboard Analytics</h3>
+                                <p>Painel de controle com análise de dados em tempo real e relatórios preditivos usando IA.</p>
+                                <div class="portfolio-techs">
+                                    <span>Vue.js</span>
+                                    <span>Python</span>
+                                    <span>Docker</span>
+                                </div>
+                                <a href="#contact" class="portfolio-link">Solicitar Projeto →</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-item" data-category="websites" data-url="https://jameshop.lovable.app/">
+                        <div class="portfolio-image">
+                            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80" alt="Loja Virtual JamesHop em tela de computador" class="portfolio-img" loading="lazy">
+                            <span class="portfolio-badge-always">E-commerce</span>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <span class="portfolio-category">E-commerce</span>
+                                <h3>JamesHop E-commerce</h3>
+                                <p>Loja virtual moderna e responsiva com catálogo completo de produtos, carrinho dinâmico e checkout integrado.</p>
+                                <div class="portfolio-techs">
+                                    <span>Next.js</span>
+                                    <span>React</span>
+                                    <span>Tailwind</span>
+                                </div>
+                                <a href="https://jameshop.lovable.app/" target="_blank" rel="noopener noreferrer" class="portfolio-link" aria-label="Acessar loja virtual JamesHop">Ver Loja Virtual Online ↗</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. About Section (Quem Somos, Missão, Visão, Valores) -->
+        <section class="about-section" id="about" aria-labelledby="about-title">
+            <div class="container">
+                <!-- 9.1. Quem Somos Intro -->
+                <header class="section-header">
+                    <span class="section-tag">QUEM SOMOS</span>
+                    <h2 class="section-title" id="about-title">Transformamos ideias em <span class='text-gradient'>experiências digitais</span></h2>
+                </header>
+
+                <div class="about-hero-card">
+                    <div class="about-hero-text">
+                        <p class="lead-text">A <strong>JStudio</strong> é uma empresa de serviços digitais especializada em <strong>design gráfico</strong> e <strong>desenvolvimento de websites</strong>.</p>
+                        <p>Ajudamos marcas, empreendedores e pequenas empresas a construir uma presença profissional e moderna no ambiente digital.</p>
+                        <p>O nosso compromisso é entregar qualidade, criatividade e soluções eficazes que gerem resultados reais para os nossos clientes.</p>
+                        <div class="about-signature">
+                            <span class="signature-badge">JStudio - Soluções Criativas & Digitais</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9.2. Missão & Visão -->
+                <div class="mission-vision-grid">
+                    <div class="mission-card">
+                        <div class="card-icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </div>
+                        <span class="sub-badge">PROPÓSITO & IMPACTO</span>
+                        <h3 class="card-title">Nossa Missão</h3>
+                        <p>Capacitar empreendedores e pequenas empresas angolanas com soluções de design e web que elevem a sua presença digital, gerando mais visibilidade, credibilidade e oportunidades de negócio.</p>
+                    </div>
+
+                    <div class="vision-card">
+                        <div class="card-icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </div>
+                        <span class="sub-badge">FUTURO & LIDERANÇA</span>
+                        <h3 class="card-title">Nossa Visão</h3>
+                        <p>Ser a referência em soluções criativas e digitais em Angola, reconhecida pela excelência, inovação e pelo impacto positivo que geramos nos negócios dos nossos clientes.</p>
+                    </div>
+                </div>
+
+                <!-- 9.3. Nossos Valores (O que nos move) -->
+                <div class="values-wrapper">
+                    <div class="values-header">
+                        <span class="section-tag">O QUE NOS MOVE</span>
+                        <h3 class="values-main-title">Nossos <span class="text-gradient">Valores</span></h3>
+                    </div>
+
+                    <div class="values-grid">
+                        <div class="value-card">
+                            <div class="value-icon">🎯</div>
+                            <h4 class="value-title">Foco no Resultado</h4>
+                            <p class="value-desc">Cada projeto é pensado para gerar resultados reais para o teu negócio.</p>
+                        </div>
+
+                        <div class="value-card">
+                            <div class="value-icon">🎨</div>
+                            <h4 class="value-title">Paixão pelo Design</h4>
+                            <p class="value-desc">Amamos o que fazemos e isso reflete-se em cada detalhe do nosso trabalho.</p>
+                        </div>
+
+                        <div class="value-card">
+                            <div class="value-icon">🤝</div>
+                            <h4 class="value-title">Compromisso</h4>
+                            <p class="value-desc">Cumprimos prazos e mantemos a qualidade que prometemos entregar.</p>
+                        </div>
+
+                        <div class="value-card">
+                            <div class="value-icon">💡</div>
+                            <h4 class="value-title">Criatividade</h4>
+                            <p class="value-desc">Soluções únicas e inovadoras que destacam a tua marca da concorrência.</p>
+                        </div>
+
+                        <div class="value-card">
+                            <div class="value-icon">👥</div>
+                            <h4 class="value-title">Parceria</h4>
+                            <p class="value-desc">Trabalhamos lado a lado contigo para alcançar os melhores resultados.</p>
+                        </div>
+
+                        <div class="value-card">
+                            <div class="value-icon">✨</div>
+                            <h4 class="value-title">Atenção ao Detalhe</h4>
+                            <p class="value-desc">Cada elemento é cuidadosamente pensado para criar um resultado perfeito.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9.4. Stack Tecnológica Complementar -->
+                <div class="about-tech-wrapper">
+                    <div class="tech-header">
+                        <span class="section-tag">EXCELÊNCIA TÉCNICA</span>
+                        <h4 class="tech-sub-title">Tecnologias que Dominamos</h4>
+                    </div>
+                    <div class="tech-grid">
+                        <div class="tech-item" data-color="#61dafb"><div class="tech-icon">⚛</div><div class="tech-name">React</div></div>
+                        <div class="tech-item" data-color="#ffffff"><div class="tech-icon">N</div><div class="tech-name">Next.js</div></div>
+                        <div class="tech-item" data-color="#3178c6"><div class="tech-icon">TS</div><div class="tech-name">TypeScript</div></div>
+                        <div class="tech-item" data-color="#f7df1e"><div class="tech-icon">JS</div><div class="tech-name">JavaScript</div></div>
+                        <div class="tech-item" data-color="#38b2ac"><div class="tech-icon">TW</div><div class="tech-name">Tailwind CSS</div></div>
+                        <div class="tech-item" data-color="#339933"><div class="tech-icon">N</div><div class="tech-name">Node.js</div></div>
+                        <div class="tech-item" data-color="#3ecf8e"><div class="tech-icon">S</div><div class="tech-name">Supabase</div></div>
+                        <div class="tech-item" data-color="#ffca28"><div class="tech-icon">F</div><div class="tech-name">Firebase</div></div>
+                        <div class="tech-item" data-color="#336791"><div class="tech-icon">PG</div><div class="tech-name">PostgreSQL</div></div>
+                        <div class="tech-item" data-color="#3776ab"><div class="tech-icon">Py</div><div class="tech-name">Python</div></div>
+                        <div class="tech-item" data-color="#02569b"><div class="tech-icon">Fl</div><div class="tech-name">Flutter</div></div>
+                        <div class="tech-item" data-color="#2496ed"><div class="tech-icon">D</div><div class="tech-name">Docker</div></div>
+                        <div class="tech-item" data-color="#f05032"><div class="tech-icon">G</div><div class="tech-name">Git</div></div>
+                        <div class="tech-item" data-color="#f24e1e"><div class="tech-icon">Fi</div><div class="tech-name">Figma</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Differentials Section -->
+        <section class="differentials" id="differentials" aria-labelledby="diff-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-tag">POR QUE A JSTUDIO?</span>
+                    <h2 class="section-title" id="diff-title">Por que escolher a <span class='text-gradient'>JStudio</span></h2>
+                    <p class="section-description">Na JStudio, não criamos apenas sites, logotipos ou conteúdos digitais. Transformamos ideias em soluções digitais profissionais que ajudam marcas e negócios a serem vistos, lembrados e escolhidos. Combinamos design, tecnologia e estratégia para criar projetos modernos, funcionais e pensados para o público de cada cliente.</p>
+                </header>
+
+                <div class="differentials-grid">
+                    <article class="differential-card">
+                        <div class="differential-icon">🎯</div>
+                        <h3 class="differential-title">Soluções Personalizadas</h3>
+                        <p class="differential-description">Cada projeto é desenvolvido de acordo com os objetivos e necessidades do seu negócio.</p>
+                    </article>
+
+                    <article class="differential-card">
+                        <div class="differential-icon">💎</div>
+                        <h3 class="differential-title">Design Profissional</h3>
+                        <p class="differential-description">Criamos uma presença visual moderna, consistente e alinhada à identidade da sua marca.</p>
+                    </article>
+
+                    <article class="differential-card">
+                        <div class="differential-icon">⚡</div>
+                        <h3 class="differential-title">Foco em Resultados</h3>
+                        <p class="differential-description">Não queremos apenas que o seu projeto seja bonito; queremos que ele cumpra uma função e gere valor.</p>
+                    </article>
+
+                    <article class="differential-card">
+                        <div class="differential-icon">🤝</div>
+                        <h3 class="differential-title">Acompanhamento Próximo</h3>
+                        <p class="differential-description">Trabalhamos em colaboração com o cliente durante o desenvolvimento do projeto.</p>
+                    </article>
+
+                    <article class="differential-card">
+                        <div class="differential-icon">🚀</div>
+                        <h3 class="differential-title">Tecnologia Moderna</h3>
+                        <p class="differential-description">Utilizamos ferramentas e tecnologias atuais para entregar soluções rápidas, funcionais e preparadas para o ambiente digital.</p>
+                    </article>
+
+                    <article class="differential-card">
+                        <div class="differential-icon">🇦🇴</div>
+                        <h3 class="differential-title">Conhecimento do Mercado Local</h3>
+                        <p class="differential-description">Entendemos os desafios de empresas e empreendedores em Angola e procuramos criar soluções adequadas à realidade do nosso mercado.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Testimonials Section (Infinite Marquee) -->
+        <section class="testimonials" id="testimonials" aria-labelledby="test-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-tag">DEPOIMENTOS</span>
+                    <h2 class="section-title" id="test-title">O que nossos <span class='text-gradient'>clientes</span> dizem</h2>
+                    <p class="section-description">Confira as avaliações de marcas e empreendedores que transformaram seus negócios com a JStudio.</p>
+                </header>
+            </div>
+
+            <div class="testimonials-marquee-wrapper">
+                <div class="marquee-fade marquee-fade-left" aria-hidden="true"></div>
+                <div class="marquee-fade marquee-fade-right" aria-hidden="true"></div>
+
+                <div class="testimonials-marquee-track">
+                    <!-- First Set of Testimonials -->
+                    <div class="testimonials-marquee-group">
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"Eu tinha uma ideia de como queria representar a minha marca, mas não sabia exatamente como transformar essa ideia num logotipo. A JStudio conseguiu criar uma identidade visual bonita, profissional e que combina com a minha marca. Fiquei muito satisfeita com o resultado."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">MC</span>
+                                <div class="testimonial-info">
+                                    <h4>Maria Chocolate</h4>
+                                    <span>Cliente JStudio — Design de Logotipo</span>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"Precisava de uma solução profissional para apresentar e vender os meus produtos online. A JStudio criou uma loja online moderna e organizada, tornando muito mais fácil para os meus clientes conhecerem os produtos e fazerem as suas compras."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">BG</span>
+                                <div class="testimonial-info">
+                                    <h4>Bernardo Gomes</h4>
+                                    <span>Cliente JStudio — Loja Online</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"A JStudio ajudou a melhorar completamente a imagem da minha marca. O novo logotipo trouxe mais identidade ao negócio e o website tornou a apresentação dos meus serviços muito mais profissional. Foi uma experiência muito positiva."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">IB</span>
+                                <div class="testimonial-info">
+                                    <h4>Isabel Barros</h4>
+                                    <span>Cliente JStudio — Website + Identidade Visual</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"A JStudio conseguiu transformar a minha oferta numa landing page moderna, clara e profissional. O projeto ficou visualmente muito atrativo e, principalmente, conseguiu apresentar a minha proposta de forma muito mais convincente."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">VA</span>
+                                <div class="testimonial-info">
+                                    <h4>Victor Austin</h4>
+                                    <span>Cliente JStudio — Landing Page</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"A JStudio conseguiu transformar a minha ideia num website profissional, moderno e fácil de navegar. Gostei bastante do resultado final e da atenção dada aos detalhes. Hoje tenho uma presença digital muito mais profissional para apresentar o meu negócio."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">MM</span>
+                                <div class="testimonial-info">
+                                    <h4>Manassé Macuca</h4>
+                                    <span>Cliente JStudio — Desenvolvimento de Website</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Second Set of Testimonials (Cloned for seamless infinite loop) -->
+                    <div class="testimonials-marquee-group" aria-hidden="true">
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"Eu tinha uma ideia de como queria representar a minha marca, mas não sabia exatamente como transformar essa ideia num logotipo. A JStudio conseguiu criar uma identidade visual bonita, profissional e que combina com a minha marca. Fiquei muito satisfeita com o resultado."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">MC</span>
+                                <div class="testimonial-info">
+                                    <h4>Maria Chocolate</h4>
+                                    <span>Cliente JStudio — Design de Logotipo</span>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"Precisava de uma solução profissional para apresentar e vender os meus produtos online. A JStudio criou uma loja online moderna e organizada, tornando muito mais fácil para os meus clientes conhecerem os produtos e fazerem as suas compras."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">BG</span>
+                                <div class="testimonial-info">
+                                    <h4>Bernardo Gomes</h4>
+                                    <span>Cliente JStudio — Loja Online</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"A JStudio ajudou a melhorar completamente a imagem da minha marca. O novo logotipo trouxe mais identidade ao negócio e o website tornou a apresentação dos meus serviços muito mais profissional. Foi uma experiência muito positiva."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">IB</span>
+                                <div class="testimonial-info">
+                                    <h4>Isabel Barros</h4>
+                                    <span>Cliente JStudio — Website + Identidade Visual</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"A JStudio conseguiu transformar a minha oferta numa landing page moderna, clara e profissional. O projeto ficou visualmente muito atrativo e, principalmente, conseguiu apresentar a minha proposta de forma muito mais convincente."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">VA</span>
+                                <div class="testimonial-info">
+                                    <h4>Victor Austin</h4>
+                                    <span>Cliente JStudio — Landing Page</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="testimonial-card">
+                            <div class="testimonial-stars" aria-label="Avaliação de 5 estrelas">
+                                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            </div>
+                            <p class="testimonial-text">"A JStudio conseguiu transformar a minha ideia num website profissional, moderno e fácil de navegar. Gostei bastante do resultado final e da atenção dada aos detalhes. Hoje tenho uma presença digital muito mais profissional para apresentar o meu negócio."</p>
+                            <div class="testimonial-author">
+                                <span class="testimonial-avatar">MM</span>
+                                <div class="testimonial-info">
+                                    <h4>Manassé Macuca</h4>
+                                    <span>Cliente JStudio — Desenvolvimento de Website</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. FAQ Section -->
+        <section class="faq" id="faq" aria-labelledby="faq-title">
+            <div class="container">
+                <header class="section-header">
+                    <span class="section-tag">FAQ</span>
+                    <h2 class="section-title" id="faq-title">Perguntas <span class='text-gradient'>frequentes</span></h2>
+                </header>
+
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Quanto tempo leva para desenvolver um projeto?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>O prazo varia conforme a complexidade do projeto. Landing pages podem ser entregues em 1-2 semanas, websites corporativos em 3-6 semanas, e sistemas complexos em 2-4 meses. Durante o planejamento, definimos um cronograma detalhado com marcos de entrega.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Quais tecnologias vocês utilizam?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>Utilizamos as tecnologias mais modernas do mercado, incluindo React, Next.js, TypeScript, Node.js, Python, Flutter, entre outras. A escolha da stack é feita com base nas necessidades específicas de cada projeto.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Vocês oferecem suporte após a entrega?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>Sim! Oferecemos planos de suporte e manutenção contínua. Todos os projetos incluem um período de garantia, e temos pacotes mensais que incluem atualizações, monitoramento e suporte técnico.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Qual o investimento mínimo para um projeto?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>Cada projeto é único e o investimento depende do escopo, complexidade e funcionalidades necessárias. Oferecemos orçamentos personalizados e gratuitos. Entre em contato para discutirmos seu projeto.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Como funciona o processo de desenvolvimento?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>Seguimos uma metodologia ágil em 7 etapas: Planejamento, Pesquisa, Design, Desenvolvimento, Testes, Implantação e Suporte. Você acompanha cada etapa e recebe atualizações regulares do progresso.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Vocês trabalham com projetos internacionais?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>Sim! Atendemos clientes em todo o mundo. Nossa equipe está preparada para trabalhar em diferentes fusos horários e nos comunicamos em português, inglês e espanhol.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>É possível acompanhar o progresso do projeto em tempo real?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>Absolutamente! Utilizamos ferramentas de gestão de projetos onde você pode acompanhar cada tarefa, visualizar o progresso e se comunicar diretamente com a equipe de desenvolvimento.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3>Vocês oferecem hospedagem e manutenção?</h3>
+                            <span class="faq-icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>Sim! Oferecemos soluções completas de hospedagem com alta disponibilidade, certificado SSL, backups automáticos e monitoramento 24/7. Nossos planos de manutenção incluem atualizações de segurança e otimizações.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. Contact / CTA Section -->
+        <section class="cta" id="contact" aria-labelledby="cta-title">
+            <div class="cta-bg" aria-hidden="true"></div>
+            <div class="container">
+                <div class="cta-content">
+                    <span class="section-tag">VAMOS CONVERSAR</span>
+                    <h2 class="cta-title" id="cta-title">Vamos construir o <span class='text-gradient'>próximo projeto</span> da sua empresa.</h2>
+                    <p class="cta-description">Solicite um orçamento gratuito e descubra como podemos transformar sua ideia em uma solução digital de alto nível.</p>
+                    <div class="cta-buttons">
+                        <a href="https://wa.me/244922769326?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20um%20projeto." target="_blank" class="btn-whatsapp magnetic" rel="noopener noreferrer">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            Falar no WhatsApp
+                        </a>
+                        <button class="btn-primary magnetic" id="btnQuoteCTA">
+                            Solicitar Orçamento
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 14. Footer -->
+    <footer class="footer" id="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#hero" class="footer-logo">
+                        <img src="logo-jstudio.png" alt="JStudio - Soluções Criativas & Digitais" class="footer-logo-img">
+                    </a>
+                    <p class="footer-description">Transformamos ideias em soluções digitais extraordinárias. Empresa especializada em desenvolvimento de software, websites e automação com IA.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="#" aria-label="GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#services">Serviços</a></li>
+                        <li><a href="#portfolio">Portfólio</a></li>
+                        <li><a href="#process">Processo</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contato</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Serviços</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Desenvolvimento de Sistemas</a></li>
+                        <li><a href="#">Websites Corporativos</a></li>
+                        <li><a href="#">Landing Pages</a></li>
+                        <li><a href="#">Automação com IA</a></li>
+                        <li><a href="#">UI/UX Design</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contato</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            <a href="tel:+244922769326">+244 922 769 326</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <a href="mailto:jstudio.co.ao@gmail.com">jstudio.co.ao@gmail.com</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <span>Cabinda, Angola</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="footer-newsletter">
+                        <p>Receba novidades</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Seu email" required aria-label="Seu endereço de email">
+                            <button type="submit" aria-label="Inscrever-se">→</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© <span id="currentYear"></span> JStudio. Todos os direitos reservados.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 15. Quote Modal -->
+    <div class="modal" id="quoteModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Solicitar Orçamento</h2>
+                <button class="modal-close" id="modalClose" aria-label="Fechar modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <form id="quoteForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="formName">Nome completo</label>
+                        <input type="text" id="formName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formCompany">Empresa</label>
+                        <input type="text" id="formCompany">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="formEmail">Email</label>
+                        <input type="email" id="formEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formPhone">Telefone</label>
+                        <input type="tel" id="formPhone">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="formService">Serviço desejado</label>
+                    <select id="formService" required>
+                        <option value="">Selecione o serviço de interesse</option>
+
+                        <optgroup label="🎨 Departamento de Design Gráfico">
+                            <option value="Logotipos">Logotipos</option>
+                            <option value="Identidade visual">Identidade visual</option>
+                            <option value="Flyers">Flyers</option>
+                            <option value="Cartões de visita">Cartões de visita</option>
+                            <option value="Catálogos">Catálogos</option>
+                            <option value="Sacolas personalizadas">Sacolas personalizadas</option>
+                            <option value="Banners">Banners</option>
+                            <option value="Convites digitais">Convites digitais</option>
+                            <option value="Timbragem">Timbragem</option>
+                        </optgroup>
+
+                        <optgroup label="💻 Departamento de Tecnologia">
+                            <option value="Websites empresariais">Websites empresariais</option>
+                            <option value="Landing pages">Landing pages</option>
+                            <option value="Lojas virtuais">Lojas virtuais</option>
+                            <option value="Aplicativos">Aplicativos</option>
+                            <option value="Softwares empresariais">Softwares empresariais</option>
+                            <option value="Sistemas de gestão">Sistemas de gestão</option>
+                            <option value="Automação WhatsApp">Automação WhatsApp</option>
+                        </optgroup>
+
+                        <optgroup label="🎬 Departamento Audiovisual">
+                            <option value="Filmagem de eventos">Filmagem de eventos</option>
+                            <option value="Casamentos">Casamentos</option>
+                            <option value="Defesas académicas">Defesas académicas</option>
+                            <option value="Vídeos promocionais">Vídeos promocionais</option>
+                            <option value="Fotografia">Fotografia</option>
+                            <option value="Edição profissional">Edição profissional</option>
+                        </optgroup>
+
+                        <optgroup label="Outros">
+                            <option value="Pacote Completo / Vários Serviços">Pacote Completo / Vários Serviços</option>
+                            <option value="Consultoria Geral">Consultoria Geral</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="formBudget">Orçamento estimado</label>
+                    <select id="formBudget">
+                        <option value="">Selecione uma faixa</option>
+                        <option value="Até R$ 5.000">Até R$ 5.000</option>
+                        <option value="R$ 5.000 - R$ 15.000">R$ 5.000 - R$ 15.000</option>
+                        <option value="R$ 15.000 - R$ 30.000">R$ 15.000 - R$ 30.000</option>
+                        <option value="R$ 30.000 - R$ 50.000">R$ 30.000 - R$ 50.000</option>
+                        <option value="Acima de R$ 50.000">Acima de R$ 50.000</option>
+                        <option value="A definir">A definir</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="formDescription">Descrição do projeto</label>
+                    <textarea id="formDescription" rows="4"></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-submit">
+                    Enviar Solicitação
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </form>
+            
+            <div class="form-success" id="formSuccess" style="display: none;">
+                <div class="success-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <h3>Solicitação Enviada!</h3>
+                <p>Obrigado pelo seu interesse! Nossa equipe entrará em contato em até 24 horas.</p>
+                <button type="button" class="btn-primary" id="successClose">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 16. Portfolio Projects Selection Modal -->
+    <div class="modal" id="portfolioProjectsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="projModalTitle">
+        <div class="modal-overlay" id="projModalOverlay"></div>
+        <div class="modal-content portfolio-modal-content">
+            <div class="modal-header">
+                <div>
+                    <span class="section-tag" id="projModalCategory">PORTFÓLIO ONLINE</span>
+                    <h2 id="projModalTitle">Projetos de Landing Page</h2>
+                </div>
+                <button class="modal-close" id="projModalClose" aria-label="Fechar modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <p class="portfolio-modal-desc">Selecione qual dos projetos você deseja explorar online em nova aba:</p>
+            
+            <div class="portfolio-modal-grid" id="projModalGrid">
+                <!-- Injected via JavaScript from card's data-multi-projects -->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
