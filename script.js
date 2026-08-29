@@ -137,9 +137,17 @@ function initParticles() {
   let ambientMotes = [];
   let energyPulses = [];
   
-  // Responsive particle density
-  const getParticleCount = () => window.innerWidth < 768 ? 40 : 75;
-  const getMoteCount = () => window.innerWidth < 768 ? 25 : 45;
+  // Responsive particle density — reduced on mobile for performance
+  const getParticleCount = () => {
+    if (window.innerWidth < 480) return 18;
+    if (window.innerWidth < 768) return 30;
+    return 75;
+  };
+  const getMoteCount = () => {
+    if (window.innerWidth < 480) return 10;
+    if (window.innerWidth < 768) return 18;
+    return 45;
+  };
   const maxDistance = 165;
   const mouseDistance = 190;
   
@@ -1584,6 +1592,8 @@ function initMagneticButtons() {
 
 function initDeviceParallax() {
   if (typeof gsap === 'undefined') return;
+  // Skip parallax on touch/mobile devices for better performance
+  if (window.matchMedia('(hover: none)').matches || window.innerWidth <= 768) return;
   const heroVisual = document.querySelector('.hero-visual');
   if (!heroVisual) return;
   
