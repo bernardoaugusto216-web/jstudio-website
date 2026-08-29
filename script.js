@@ -566,19 +566,40 @@ function initNavbar() {
 
 function initHeroAnimations() {
   if (typeof gsap === 'undefined') return;
-  const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  const isMobile = window.innerWidth <= 768;
+  const elements = ['.hero-badge', '.hero-title', '.hero-description', '.hero-buttons', '.hero-clients'];
+
+  if (isMobile) {
+    // Immediate visibility guarantee on mobile devices
+    gsap.set(elements, { opacity: 1, y: 0, clearProps: 'all' });
+    const mTl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+    mTl
+      .fromTo('.hero-badge', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, delay: 0.1 })
+      .fromTo('.hero-title', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, '-=0.15')
+      .fromTo('.hero-description', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, '-=0.2')
+      .fromTo('.hero-buttons', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35 }, '-=0.15')
+      .fromTo('.hero-clients', { opacity: 0 }, { opacity: 1, duration: 0.35 }, '-=0.15');
+    return;
+  }
+
+  const heroTl = gsap.timeline({ 
+    defaults: { ease: 'power3.out' },
+    onComplete: () => {
+      // Clear properties to prevent any CSS interference
+      gsap.set(elements, { clearProps: 'opacity,transform' });
+    }
+  });
   
   if (document.querySelector('.hero-badge')) {
     heroTl
-      .from('.hero-badge', { opacity: 0, y: 20, duration: 0.6, delay: 0.3 })
-      .from('.hero-title', { opacity: 0, y: 40, duration: 0.8 }, '-=0.3')
+      .from('.hero-badge', { opacity: 0, y: 20, duration: 0.6, delay: 0.25 })
+      .from('.hero-title', { opacity: 0, y: 40, duration: 0.8 }, '-=0.35')
       .from('.hero-description', { opacity: 0, y: 30, duration: 0.6 }, '-=0.4')
       .from('.hero-buttons .btn-primary', { opacity: 0, y: 20, duration: 0.5 }, '-=0.3')
       .from('.hero-buttons .btn-secondary', { opacity: 0, y: 20, duration: 0.5 }, '-=0.3')
       .from('.hero-clients', { opacity: 0, y: 20, duration: 0.6 }, '-=0.2')
-      .from('.device-laptop', { opacity: 0, x: 50, rotationY: 15, duration: 1 }, '-=0.8')
-      .from('.device-tablet', { opacity: 0, x: 30, rotationY: -10, duration: 0.8 }, '-=0.6')
-      .from('.device-phone', { opacity: 0, y: 30, rotationY: 10, duration: 0.8 }, '-=0.6');
+      .from('.hero-video-container', { opacity: 0, scale: 0.95, duration: 0.8 }, '-=0.5');
   }
 }
 
@@ -1305,98 +1326,73 @@ function initPortfolioFilter() {
 }
 
 function initTestimonialsCarousel() {
-  const track = document.getElementById('testimonialsTrack');
-  const dotsContainer = document.getElementById('testimonialDots');
-  const prevBtn = document.getElementById('testimonialPrev');
-  const nextBtn = document.getElementById('testimonialNext');
+  const wrapper = document.querySelector('.testimonials-marquee-wrapper');
+  const track = document.querySelector('.testimonials-marquee-track');
+  const groups = document.querySelectorAll('.testimonials-marquee-group');
   
-  if (!track) return;
-  
-  const cards = track.querySelectorAll('.testimonial-card');
-  if (cards.length === 0) return;
+  if (!wrapper || groups.length === 0) return;
 
-  let currentIndex = 0;
-  let cardsPerView = 3;
-  let autoplayInterval;
-  
-  function updateCardsPerView() {
-    if (window.innerWidth < 768) cardsPerView = 1;
-    else if (window.innerWidth < 1024) cardsPerView = 2;
-    else cardsPerView = 3;
+  // Touch drag support for mobile
+  let isTouching = false;
+  let startX = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let resumeTimeout;
+
+  function pauseMarquee() {
+    groups.forEach(g => {
+      g.style.animationPlayState = 'paused';
+      g.style.webkitAnimationPlayState = 'paused';
+    });
   }
-  updateCardsPerView();
-  window.addEventListener('resize', () => {
-    updateCardsPerView();
-    goTo(currentIndex);
-    createDots();
-  });
-  
-  function createDots() {
-    if (!dotsContainer) return;
-    dotsContainer.innerHTML = '';
-    const numDots = Math.max(0, cards.length - cardsPerView) + 1;
-    for (let i = 0; i < numDots; i++) {
-      const dot = document.createElement('span');
-      dot.classList.add('dot');
-      if (i === currentIndex) dot.classList.add('active');
-      dot.addEventListener('click', () => goTo(i));
-      dotsContainer.appendChild(dot);
-    }
-  }
-  createDots();
-  
-  function goTo(index) {
-    const maxIdx = Math.max(0, cards.length - cardsPerView);
-    currentIndex = Math.min(Math.max(0, index), maxIdx);
-    
-    // Fallback if cards or track compute poorly initially
-    const cardWidth = cards[0].offsetWidth > 0 ? cards[0].offsetWidth : track.offsetWidth / cardsPerView;
-    const gap = parseInt(getComputedStyle(track).gap) || 0;
-    const offset = -currentIndex * (cardWidth + gap);
-    
-    track.style.transform = `translateX(${offset}px)`;
-    
-    // Update dots
-    if (dotsContainer) {
-      dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
+
+  function resumeMarquee() {
+    clearTimeout(resumeTimeout);
+    resumeTimeout = setTimeout(() => {
+      groups.forEach(g => {
+        g.style.animationPlayState = 'running';
+        g.style.webkitAnimationPlayState = 'running';
       });
-    }
-  }
-  
-  if (prevBtn) prevBtn.addEventListener('click', () => { goTo(currentIndex - 1); resetAutoplay(); });
-  if (nextBtn) nextBtn.addEventListener('click', () => { goTo(currentIndex + 1); resetAutoplay(); });
-  
-  // Autoplay
-  function startAutoplay() {
-    autoplayInterval = setInterval(() => {
-      const maxIdx = Math.max(0, cards.length - cardsPerView);
-      if (currentIndex >= maxIdx) {
-        goTo(0);
-      } else {
-        goTo(currentIndex + 1);
+      // Smoothly return track to neutral
+      if (track) {
+        track.style.transition = 'transform 0.4s ease';
+        track.style.transform = 'translateX(0px)';
+        setTimeout(() => {
+          if (track) track.style.transition = '';
+        }, 400);
       }
-    }, 4000);
+    }, 1200);
   }
-  function resetAutoplay() {
-    clearInterval(autoplayInterval);
-    startAutoplay();
-  }
-  startAutoplay();
-  
-  // Touch support
-  let touchStartX = 0;
-  let touchEndX = 0;
-  track.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-  track.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) goTo(currentIndex + 1);
-      else goTo(currentIndex - 1);
-      resetAutoplay();
-    }
+
+  wrapper.addEventListener('touchstart', (e) => {
+    isTouching = true;
+    startX = e.touches[0].clientX;
+    pauseMarquee();
   }, { passive: true });
+
+  wrapper.addEventListener('touchmove', (e) => {
+    if (!isTouching || !track) return;
+    const currentX = e.touches[0].clientX;
+    const diffX = currentX - startX;
+    // Allow responsive nudge with finger
+    track.style.transform = `translateX(${diffX * 0.75}px)`;
+  }, { passive: true });
+
+  wrapper.addEventListener('touchend', () => {
+    isTouching = false;
+    resumeMarquee();
+  }, { passive: true });
+
+  wrapper.addEventListener('touchcancel', () => {
+    isTouching = false;
+    resumeMarquee();
+  }, { passive: true });
+
+  // Ensure marquee is running on load
+  groups.forEach(g => {
+    g.style.animationPlayState = 'running';
+    g.style.webkitAnimationPlayState = 'running';
+  });
 }
 
 function initFAQ() {
