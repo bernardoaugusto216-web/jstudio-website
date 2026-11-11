@@ -40,34 +40,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initLenis() {
+  // PERFORMANCE: o smooth-scroll via JS (Lenis) foi desativado.
+  // O scroll nativo do browser é instantâneo e acompanha a roda do rato
+  // sem atraso. O Lenis só é usado se for carregado explicitamente.
   if (typeof Lenis === 'undefined') return;
-  
+
   const lenis = new Lenis({
-    duration: 0.8,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    orientation: 'vertical',
-    gestureOrientation: 'vertical',
+    duration: 0.6,
     smoothWheel: true,
-    wheelMultiplier: 1.4,
-    touchMultiplier: 1.8,
-    autoResize: true,
+    wheelMultiplier: 1.2,
   });
-  
-  // Connect Lenis to GSAP ScrollTrigger if available
+
   if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-    gsap.ticker.lagSmoothing(0);
   } else {
-    // Fallback: standalone raf loop only when GSAP is not loaded
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
   }
-  
-  // Store reference globally for modal control
+
   window.__lenis = lenis;
 }
 
@@ -84,33 +78,39 @@ function initCustomCursor() {
   let mouseX = 0, mouseY = 0;
   let cursorX = 0, cursorY = 0;
   let followerX = 0, followerY = 0;
-  
+  let rafId = null;
+
+  // PERFORMANCE: usar transform (GPU) em vez de left/top (layout),
+  // e só correr o loop enquanto o cursor se está a mover.
+  [cursor, follower, glow].forEach(el => {
+    el.style.left = '0px';
+    el.style.top = '0px';
+    el.style.willChange = 'transform';
+  });
+
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-  });
-  
-  // Smooth cursor following using requestAnimationFrame
+    if (rafId === null) rafId = requestAnimationFrame(animate);
+  }, { passive: true });
+
   function animate() {
-    // Cursor follows instantly
     cursorX += (mouseX - cursorX) * 0.5;
     cursorY += (mouseY - cursorY) * 0.5;
-    cursor.style.left = cursorX + 'px';
-    cursor.style.top = cursorY + 'px';
-    
-    // Follower follows with delay
     followerX += (mouseX - followerX) * 0.15;
     followerY += (mouseY - followerY) * 0.15;
-    follower.style.left = followerX + 'px';
-    follower.style.top = followerY + 'px';
-    
-    // Glow follows with more delay
-    glow.style.left = mouseX + 'px';
-    glow.style.top = mouseY + 'px';
-    
-    requestAnimationFrame(animate);
+
+    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+    follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0) translate(-50%, -50%)`;
+    glow.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+
+    // Parar o loop quando o seguidor alcança o rato
+    if (Math.abs(mouseX - followerX) < 0.1 && Math.abs(mouseY - followerY) < 0.1) {
+      rafId = null;
+      return;
+    }
+    rafId = requestAnimationFrame(animate);
   }
-  animate();
   
   // Hover effects on interactive elements
   const hoverElements = document.querySelectorAll('a, button, .service-card, .portfolio-item, .tech-item, .faq-question');
@@ -132,23 +132,24 @@ function initParticles() {
   const ctx = canvas.getContext('2d');
   
   let width, height;
-  let dpr = window.devicePixelRatio || 1;
+  let dpr = Math.min(window.devicePixelRatio || 1, 1.5); // PERFORMANCE: limitar resolução do canvas
   let particles = [];
   let ambientMotes = [];
   let energyPulses = [];
   
-  // Responsive particle density — reduced on mobile for performance
+  // Responsive particle density — reduced for performance
   const getParticleCount = () => {
-    if (window.innerWidth < 480) return 18;
-    if (window.innerWidth < 768) return 30;
-    return 75;
-  };
-  const getMoteCount = () => {
-    if (window.innerWidth < 480) return 10;
-    if (window.innerWidth < 768) return 18;
+    if (window.innerWidth < 480) return 14;
+    if (window.innerWidth < 768) return 22;
     return 45;
   };
+  const getMoteCount = () => {
+    if (window.innerWidth < 480) return 8;
+    if (window.innerWidth < 768) return 12;
+    return 25;
+  };
   const maxDistance = 165;
+  const maxDistanceSq = maxDistance * maxDistance;
   const mouseDistance = 190;
   
   // Interactive mouse state
@@ -165,7 +166,7 @@ function initParticles() {
     mouse.targetX = e.clientX;
     mouse.targetY = e.clientY;
     mouse.isActive = true;
-  });
+  }, { passive: true });
 
   window.addEventListener('mouseleave', () => {
     mouse.targetX = null;
@@ -174,7 +175,7 @@ function initParticles() {
   });
 
   function resize() {
-    dpr = window.devicePixelRatio || 1;
+    dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     width = window.innerWidth;
     height = window.innerHeight;
     
@@ -182,7 +183,7 @@ function initParticles() {
     canvas.height = height * dpr;
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     
     initObjects();
   }
@@ -262,15 +263,18 @@ function initParticles() {
     }
     
     draw() {
+      // PERFORMANCE: shadowBlur é muito caro no canvas; simulamos o brilho
+      // com um halo semitransparente (2 arcos simples, sem save/restore).
       const currentOpacity = Math.max(0, Math.min(1, this.opacity));
-      ctx.save();
+      const r = Math.max(0.5, this.radius);
       ctx.beginPath();
-      ctx.arc(this.x, this.y, Math.max(0.5, this.radius), 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${this.rgb}, ${currentOpacity})`;
-      ctx.shadowBlur = this.radius > 2 || this.flashIntensity > 0.1 ? 14 : 6;
-      ctx.shadowColor = this.glowColor;
+      ctx.arc(this.x, this.y, r * 2.6, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.rgb}, ${currentOpacity * 0.18})`;
       ctx.fill();
-      ctx.restore();
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.rgb}, ${currentOpacity})`;
+      ctx.fill();
     }
   }
 
@@ -299,12 +303,10 @@ function initParticles() {
     
     draw() {
       const a = this.alpha + Math.sin(this.pulse) * 0.08;
-      ctx.save();
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(205, 85, 15, ${Math.max(0, a)})`;
       ctx.fill();
-      ctx.restore();
     }
   }
 
@@ -333,14 +335,14 @@ function initParticles() {
       const currentX = this.p1.x + (this.p2.x - this.p1.x) * this.progress;
       const currentY = this.p1.y + (this.p2.y - this.p1.y) * this.progress;
       
-      ctx.save();
+      ctx.beginPath();
+      ctx.arc(currentX, currentY, this.size * 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(243, 134, 18, 0.25)';
+      ctx.fill();
       ctx.beginPath();
       ctx.arc(currentX, currentY, this.size, 0, Math.PI * 2);
       ctx.fillStyle = '#FFF0E5';
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = 'rgba(243, 134, 18, 0.95)';
       ctx.fill();
-      ctx.restore();
     }
   }
 
@@ -393,39 +395,40 @@ function initParticles() {
 
   function drawConnections() {
     const len = particles.length;
+    const mouseOn = mouse.isActive && mouse.x !== null;
+    const mouseRadiusSq = mouse.radius * mouse.radius;
+    ctx.lineWidth = 0.65;
     for (let i = 0; i < len; i++) {
       const p1 = particles[i];
       
       // Connect to mouse if within radius
-      if (mouse.isActive && mouse.x !== null) {
+      if (mouseOn) {
         const mdx = p1.x - mouse.x;
         const mdy = p1.y - mouse.y;
-        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-        if (mdist < mouse.radius) {
-          const mOpacity = (1 - mdist / mouse.radius) * 0.28;
+        const mdistSq = mdx * mdx + mdy * mdy;
+        if (mdistSq < mouseRadiusSq) {
+          const mOpacity = (1 - Math.sqrt(mdistSq) / mouse.radius) * 0.28;
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(mouse.x, mouse.y);
           ctx.strokeStyle = `rgba(230, 95, 15, ${mOpacity})`;
-          ctx.lineWidth = 0.9;
           ctx.stroke();
         }
       }
       
-      // Connect with neighboring particles
+      // Connect with neighboring particles (distância ao quadrado: evita sqrt desnecessários)
       for (let j = i + 1; j < len; j++) {
         const p2 = particles[j];
         const dx = p1.x - p2.x;
         const dy = p1.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const distSq = dx * dx + dy * dy;
         
-        if (dist < maxDistance) {
-          const opacity = (1 - dist / maxDistance) * 0.16;
+        if (distSq < maxDistanceSq) {
+          const opacity = (1 - Math.sqrt(distSq) / maxDistance) * 0.16;
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
           ctx.strokeStyle = `rgba(195, 75, 10, ${opacity})`;
-          ctx.lineWidth = 0.65;
           ctx.stroke();
         }
       }
@@ -434,9 +437,21 @@ function initParticles() {
 
   let animationFrameId;
   let isRunning = true;
+  let isScrolling = false;
+  let scrollTimer = null;
+
+  // PERFORMANCE: congelar o canvas enquanto o utilizador faz scroll,
+  // libertando a thread principal/GPU para um scroll fluido.
+  window.addEventListener('scroll', () => {
+    isScrolling = true;
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => { isScrolling = false; }, 150);
+  }, { passive: true });
 
   function animate() {
     if (!isRunning) return;
+    animationFrameId = requestAnimationFrame(animate);
+    if (isScrolling) return;
     
     // Smooth mouse coordinate interpolation
     if (mouse.targetX !== null && mouse.targetY !== null) {
@@ -452,39 +467,60 @@ function initParticles() {
     ctx.clearRect(0, 0, width, height);
     
     // 1. Draw ambient floating motes
-    ambientMotes.forEach(m => {
-      m.update();
-      m.draw();
-    });
+    for (let i = 0; i < ambientMotes.length; i++) {
+      ambientMotes[i].update();
+      ambientMotes[i].draw();
+    }
     
     // 2. Draw neural node particles
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+    }
     
     // 3. Draw connecting mesh & mouse laser threads
     drawConnections();
     
     // 4. Update & draw energy data pulses
     handleEnergyPulses();
-    
-    animationFrameId = requestAnimationFrame(animate);
   }
 
   // Handle visibility change to save resources
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       isRunning = false;
       cancelAnimationFrame(animationFrameId);
-    } else {
+    } else if (!isRunning && !reducedMotion) {
       isRunning = true;
       animationFrameId = requestAnimationFrame(animate);
     }
   });
 
-  window.addEventListener('resize', resize);
+  // Debounce do resize; em mobile ignorar mudanças só de altura
+  // (a barra de endereço a aparecer/desaparecer durante o scroll).
+  let resizeTimer = null;
+  let lastWidth = window.innerWidth;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const isTouch = window.matchMedia('(hover: none)').matches;
+      if (isTouch && window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      resize();
+    }, 200);
+  });
+
   resize();
+
+  // Respeitar utilizadores que preferem menos movimento: desenhar 1 frame estático
+  if (reducedMotion) {
+    isRunning = true;
+    animate();
+    isRunning = false;
+    cancelAnimationFrame(animationFrameId);
+    return;
+  }
   animate();
 }
 
@@ -494,17 +530,24 @@ function initNavbar() {
   const navToggle = document.getElementById('navToggle');
   const mobileMenu = document.getElementById('mobileMenu');
   
-  // Scroll effect
-  let lastScroll = 0;
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    if (currentScroll > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
+  // Scroll effect (passive + rAF: não bloqueia o scroll)
+  let navTicking = false;
+  let isScrolledState = null;
+  const updateNavbar = () => {
+    const scrolled = window.scrollY > 50;
+    if (scrolled !== isScrolledState) {
+      navbar.classList.toggle('scrolled', scrolled);
+      isScrolledState = scrolled;
     }
-    lastScroll = currentScroll;
-  });
+    navTicking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!navTicking) {
+      navTicking = true;
+      requestAnimationFrame(updateNavbar);
+    }
+  }, { passive: true });
+  updateNavbar();
   
   // Mobile menu toggle
   if (navToggle && mobileMenu) {
@@ -533,7 +576,7 @@ function initNavbar() {
       if (target) {
         e.preventDefault();
         const offset = navbar.offsetHeight;
-        const targetPosition = target.offsetTop - offset;
+        const targetPosition = target.getBoundingClientRect().top + window.scrollY - offset;
         if (window.__lenis) {
           window.__lenis.scrollTo(targetPosition);
         } else {
@@ -543,25 +586,22 @@ function initNavbar() {
     });
   });
   
-  // Active link highlighting
+  // Active link highlighting (IntersectionObserver: sem leituras de layout no scroll)
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
-  
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop - 200;
-      if (window.scrollY >= sectionTop) {
-        current = section.getAttribute('id');
-      }
-    });
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === '#' + current) {
-        link.classList.add('active');
-      }
-    });
-  });
+
+  if ('IntersectionObserver' in window && sections.length) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      });
+    }, { rootMargin: '-200px 0px -55% 0px', threshold: 0 });
+    sections.forEach(section => sectionObserver.observe(section));
+  }
 }
 
 function initHeroAnimations() {

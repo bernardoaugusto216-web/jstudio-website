@@ -3859,6 +3859,81 @@ form.hidden {
   .testimonials-marquee-group {
     animation-duration: 60s !important;
   }
+  html { scroll-behavior: auto; }
+}
+
+
+/* ===== PERFORMANCE / SCROLL FLUIDO =====
+   Otimizações para o scroll com a roda do rato ser imediato e leve. */
+
+/* Fundo fixo numa camada GPU própria: não é repintado durante o scroll */
+.bg-animated-wrapper {
+  transform: translateZ(0);
+  contain: strict;
+}
+
+/* filter: blur(120px) em elementos de 800px animados é extremamente caro.
+   O radial-gradient já é suave, por isso o blur é desnecessário. */
+.bg-glow-orb {
+  filter: none !important;
+  will-change: transform;
+}
+.bg-glow-orb-1 { animation-name: orb-float-1-lite; }
+.bg-glow-orb-2 { animation-name: orb-float-2-lite; }
+.bg-glow-orb-3 { animation-name: orb-float-3-lite; }
+
+@keyframes orb-float-1-lite {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(140px, 90px, 0) scale(1.15); }
+  100% { transform: translate3d(-90px, 160px, 0) scale(0.92); }
+}
+@keyframes orb-float-2-lite {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-160px, -80px, 0) scale(1.2); }
+  100% { transform: translate3d(-70px, 120px, 0) scale(1.05); }
+}
+@keyframes orb-float-3-lite {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-120px, -140px, 0) scale(1.12); }
+  100% { transform: translate3d(110px, -50px, 0) scale(0.9); }
+}
+
+/* Grelha com mask-image em ecrã inteiro: animar só a opacidade */
+.bg-cyber-grid { animation-name: grid-pulse-lite; }
+@keyframes grid-pulse-lite {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.95; }
+}
+
+/* backdrop-filter em dezenas de cartões obriga o browser a re-desfocar
+   o fundo animado a cada frame de scroll. Mantemos apenas na navbar,
+   menu mobile e modais (os cartões já têm fundo quase opaco). */
+.btn-primary, .btn-secondary, .hero-badge, .container-scroll-card,
+.dept-btn, .service-card, .service-card.fan-card, .fan-arrow-btn, .fan-dots,
+.timeline-content, .filter-btn, .portfolio-item, .portfolio-badge-always,
+.portfolio-techs span, .about-hero-card, .vision-card, .value-card,
+.tech-item, .differential-card, .testimonial-card, .footer-social a {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Brilho do cursor posicionado via transform (ver script.js) */
+.custom-cursor, .cursor-follower, .cursor-glow {
+  top: 0;
+  left: 0;
+}
+
+/* Secções fora do ecrã não são renderizadas até se aproximarem */
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* Mobile: desativar efeitos pesados de fundo */
+@media (max-width: 768px) {
+  .bg-glow-orb { animation: none !important; }
+  .bg-cyber-grid { animation: none !important; }
+  .cursor-glow, .custom-cursor, .cursor-follower { display: none !important; }
 }
 
 
