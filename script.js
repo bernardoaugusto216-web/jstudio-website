@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTestimonialsCarousel();
   initFAQ();
   initModal();
+  initServicePicker();
   initFormValidation();
   initMagneticButtons();
   initContainerScroll();
@@ -1479,7 +1480,7 @@ function initModal() {
   if (!modal) return;
   
   // Open modal triggers
-  const openTriggers = document.querySelectorAll('#btnQuote, #btnQuoteCTA, .hero-buttons .btn-primary');
+  const openTriggers = document.querySelectorAll('#btnQuote, #btnQuoteMobile, #btnQuoteCTA, .hero-buttons .btn-primary');
   
   function openModal() {
     modal.classList.add('active');
@@ -1520,6 +1521,176 @@ function initModal() {
       closeModal();
     }
   });
+}
+
+function initServicePicker() {
+  const grid = document.getElementById('servicePickerGrid');
+  const hiddenService = document.getElementById('formService');
+  const hiddenBudget = document.getElementById('formBudget');
+  const summary = document.getElementById('serviceSummary');
+  const tabs = document.querySelectorAll('.sp-tab');
+  const form = document.getElementById('quoteForm');
+  if (!grid || !hiddenService) return;
+
+  // Preços de referência ("a partir de") em Kwanzas angolanos
+  const SERVICES = {
+    design: [
+      { name: 'Logotipos', desc: 'Marca única e memorável', price: 50000 },
+      { name: 'Identidade visual', desc: 'Manual de marca completo', price: 150000 },
+      { name: 'Flyers', desc: 'Impressos e digitais', price: 50000 },
+      { name: 'Cartões de visita', desc: 'Design premium', price: 50000 },
+      { name: 'Catálogos', desc: 'Produtos e serviços', price: 120000 },
+      { name: 'Sacolas personalizadas', desc: 'Embalagem com a sua marca', price: 80000 },
+      { name: 'Banners', desc: 'Lonas, roll-ups e digital', price: 60000 },
+      { name: 'Convites digitais', desc: 'Eventos e cerimónias', price: 50000 },
+      { name: 'Timbragem', desc: 'Papelaria corporativa', price: 70000 },
+    ],
+    tech: [
+      { name: 'Landing pages', desc: 'Páginas de alta conversão', price: 150000 },
+      { name: 'Automação WhatsApp', desc: 'Atendimento com IA 24/7', price: 200000 },
+      { name: 'Websites empresariais', desc: 'Presença digital profissional', price: 250000 },
+      { name: 'Lojas virtuais', desc: 'E-commerce completo', price: 350000 },
+      { name: 'Sistemas de gestão', desc: 'ERP, stock e faturação', price: 400000 },
+      { name: 'Aplicativos', desc: 'Android e iOS', price: 450000 },
+      { name: 'Softwares empresariais', desc: 'Soluções à medida', price: 450000 },
+    ],
+    av: [
+      { name: 'Edição profissional', desc: 'Pós-produção de vídeo', price: 70000 },
+      { name: 'Defesas académicas', desc: 'Filmagem e fotografia', price: 80000 },
+      { name: 'Fotografia', desc: 'Sessões e eventos', price: 100000 },
+      { name: 'Filmagem de eventos', desc: 'Cobertura completa', price: 150000 },
+      { name: 'Vídeos promocionais', desc: 'Publicidade e redes sociais', price: 200000 },
+      { name: 'Casamentos', desc: 'Foto e vídeo cinematográfico', price: 300000 },
+    ],
+    other: [
+      { name: 'Consultoria Geral', desc: 'Estratégia digital e de marca', price: 50000 },
+      { name: 'Pacote Completo / Vários Serviços', desc: 'Marca + website + conteúdo', price: 450000, featured: true },
+    ],
+  };
+
+  const formatKz = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Kz';
+  let currentDept = 'design';
+
+  function render(dept) {
+    currentDept = dept;
+    grid.innerHTML = '';
+    SERVICES[dept].forEach((s, i) => {
+      const id = `sp-${dept}-${i}`;
+      const label = document.createElement('label');
+      label.className = 'sp-option' + (s.featured ? ' sp-option--featured' : '');
+      label.setAttribute('for', id);
+      label.innerHTML = `
+        <input type="radio" name="serviceOption" id="${id}" value="${s.name}" data-price="${s.price}">
+        <span class="sp-card">
+          ${s.featured ? '<span class="sp-badge">Mais completo</span>' : ''}
+          <span class="sp-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="sp-name">${s.name}</span>
+          <span class="sp-desc">${s.desc}</span>
+          <span class="sp-price"><small>a partir de</small> ${formatKz(s.price)}</span>
+        </span>`;
+      const input = label.querySelector('input');
+      if (hiddenService.value === s.name) input.checked = true;
+      input.addEventListener('change', () => select(s));
+      grid.appendChild(label);
+    });
+  }
+
+  function select(s) {
+    hiddenService.value = s.name;
+    const group = hiddenService.closest('.form-group');
+    if (group) {
+      group.classList.remove('error');
+      group.querySelectorAll('.error-message').forEach(m => m.remove());
+    }
+    summary.classList.add('has-value');
+    summary.innerHTML = `
+      <span class="sp-summary-label">Selecionado</span>
+      <span class="sp-summary-name">${s.name}</span>
+      <span class="sp-summary-price">a partir de <strong>${formatKz(s.price)}</strong></span>`;
+
+    // Sugerir automaticamente a faixa de orçamento (se o cliente ainda não escolheu)
+    if (hiddenBudget && !hiddenBudget.dataset.userChosen) {
+      let value;
+      if (s.price < 100000) value = '50.000 Kz - 100.000 Kz';
+      else if (s.price < 200000) value = '100.000 Kz - 200.000 Kz';
+      else if (s.price < 300000) value = '200.000 Kz - 300.000 Kz';
+      else value = '300.000 Kz - 450.000 Kz';
+      const radio = document.querySelector(`input[name="budgetOption"][value="${value}"]`);
+      if (radio) { radio.checked = true; hiddenBudget.value = value; }
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      render(tab.dataset.dept);
+    });
+  });
+
+  // Orçamento
+  document.querySelectorAll('input[name="budgetOption"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (!hiddenBudget) return;
+      hiddenBudget.value = radio.value;
+      hiddenBudget.dataset.userChosen = '1';
+    });
+  });
+
+  // Limpar o seletor quando o formulário é reiniciado (ao fechar o modal)
+  if (form) {
+    form.addEventListener('reset', () => {
+      setTimeout(() => {
+        hiddenService.value = '';
+        if (hiddenBudget) { hiddenBudget.value = ''; delete hiddenBudget.dataset.userChosen; }
+        summary.classList.remove('has-value');
+        summary.innerHTML = '<span class="sp-summary-empty">Nenhum serviço selecionado</span>';
+        tabs.forEach((t, i) => {
+          t.classList.toggle('active', i === 0);
+          t.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        });
+        render('design');
+      }, 0);
+    });
+  }
+
+  // Quando o utilizador clica em "Solicitar Orçamento" num cartão de serviço,
+  // abrir o modal já com esse serviço pré-selecionado.
+  document.querySelectorAll('.service-card .service-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const card = link.closest('.service-card');
+      const titleEl = card ? card.querySelector('.service-title') : null;
+      const modal = document.getElementById('quoteModal');
+      if (modal) {
+        modal.classList.add('active');
+        document.body.classList.add('overflow-hidden');
+        if (window.__lenis) window.__lenis.stop();
+      }
+      if (!titleEl) return;
+      const targetName = titleEl.textContent.trim().toLowerCase();
+      for (const [dept, list] of Object.entries(SERVICES)) {
+        const found = list.find(s => s.name.toLowerCase() === targetName);
+        if (found) {
+          tabs.forEach(t => {
+            const active = t.dataset.dept === dept;
+            t.classList.toggle('active', active);
+            t.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          render(dept);
+          select(found);
+          const radio = grid.querySelector(`input[value="${found.name}"]`);
+          if (radio) radio.checked = true;
+          break;
+        }
+      }
+    });
+  });
+
+  render(currentDept);
 }
 
 function initFormValidation() {
@@ -1563,6 +1734,7 @@ function initFormValidation() {
     if (isValid) {
       // Simulate form submission
       const submitBtn = form.querySelector('.btn-submit');
+      const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
         submitBtn.textContent = 'Enviando...';
         submitBtn.disabled = true;
@@ -1573,7 +1745,7 @@ function initFormValidation() {
         const formSuccess = document.getElementById('formSuccess');
         if (formSuccess) formSuccess.classList.add('active');
         if (submitBtn) {
-          submitBtn.textContent = 'Enviar Solicitação';
+          submitBtn.innerHTML = originalBtnHTML;
           submitBtn.disabled = false;
         }
       }, 1500);
